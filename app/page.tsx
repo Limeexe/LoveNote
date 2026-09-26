@@ -67,7 +67,7 @@ const CustomStyles = () => (
   `}} />
 );
 
-// Inspired by image_b57913.jpg (watercolor heart)
+// Watercolor heart background design
 const WatercolorHeart = () => (
   <svg viewBox="0 0 200 200" className="w-full h-full opacity-30 absolute inset-0 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
     <path 
@@ -83,8 +83,12 @@ const WatercolorHeart = () => (
   </svg>
 );
 
-// Inspired by image_b57bd5.jpg (lipstick kiss)
-const LipstickKiss = ({ className }) => (
+interface LipstickKissProps {
+  className?: string;
+}
+
+// Lipstick kiss design
+const LipstickKiss = ({ className }: LipstickKissProps) => (
   <svg viewBox="0 0 100 60" className={`w-8 h-8 opacity-60 ${className}`} xmlns="http://www.w3.org/2000/svg">
     <path d="M10,30 Q25,10 50,20 Q75,10 90,30 Q75,25 50,30 Q25,25 10,30 Z" fill="#d91e48" />
     <path d="M10,30 Q25,50 50,40 Q75,50 90,30 Q75,35 50,35 Q25,35 10,30 Z" fill="#c0153b" />
@@ -92,18 +96,21 @@ const LipstickKiss = ({ className }) => (
   </svg>
 );
 
-const Envelope = ({ isOpened, setIsOpened }) => {
-  const [sealPopped, setSealPopped] = useState(false);
-  const [showNoteContent, setShowNoteContent] = useState(false);
+interface EnvelopeProps {
+  isOpened: boolean;
+  setIsOpened: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Envelope = ({ isOpened, setIsOpened }: EnvelopeProps) => {
+  const [sealPopped, setSealPopped] = useState<boolean>(false);
+  const [showNoteContent, setShowNoteContent] = useState<boolean>(false);
 
   useEffect(() => {
     if (isOpened) {
       setSealPopped(true);
-      // Delay showing content fully until letter slides up slightly
       setTimeout(() => setShowNoteContent(true), 600);
     } else {
       setShowNoteContent(false);
-      // Reset seal when closing
       setTimeout(() => setSealPopped(false), 500); 
     }
   }, [isOpened]);
@@ -184,6 +191,7 @@ const Envelope = ({ isOpened, setIsOpened }) => {
                backfaceVisibility: 'hidden',
                transform: 'rotateX(180deg)' 
              }}>
+
              {/* Little pattern inside the flap */}
              <div className="w-full h-full opacity-20 flex justify-center items-end pb-8">
                <Heart size={24} fill="#9f1239" className="rotate-180"/>
@@ -205,14 +213,21 @@ const Envelope = ({ isOpened, setIsOpened }) => {
   );
 };
 
+interface FloatingHeart {
+  id: number;
+  left: string;
+  animationDelay: string;
+  size: number;
+}
+
 export default function App() {
-  const [isOpened, setIsOpened] = useState(false);
-  const [hearts, setHearts] = useState([]);
+  const [isOpened, setIsOpened] = useState<boolean>(false);
+  const [hearts, setHearts] = useState<FloatingHeart[]>([]);
 
   // Generate floating hearts when opened
   useEffect(() => {
     if (isOpened) {
-      const newHearts = Array.from({ length: 15 }).map((_, i) => ({
+      const newHearts: FloatingHeart[] = Array.from({ length: 15 }).map((_, i) => ({
         id: i,
         left: `${Math.random() * 100}%`,
         animationDelay: `${Math.random() * 0.5}s`,
@@ -232,7 +247,7 @@ export default function App() {
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-rose-100 to-red-50 flex flex-col items-center justify-center p-4 overflow-hidden font-sans relative">
       <CustomStyles />
       
-      {/* Background decoration inspired by image_b525ff.jpg (books/shelves vibe) */}
+      {/* Background decoration */}
       <div className="absolute top-0 left-0 w-full h-32 bg-white/40 border-b border-rose-200 shadow-sm flex items-end justify-around px-10 pb-4 hidden sm:flex">
          <div className="flex gap-2 items-end">
             <div className="w-4 h-16 bg-rose-500 rounded-sm"></div>
